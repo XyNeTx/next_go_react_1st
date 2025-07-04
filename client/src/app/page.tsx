@@ -1,11 +1,78 @@
+'use client'
 import Image from "next/image";
+import { useState } from "react";
+import Click from "../components/click";
+import axios from "axios";
 
-function Title() {
+type Person = {
+  id: number;
+  name: string;
+  age: number;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+};
+
+
+export function Testget(){
+  const [get,setGet] = useState([]);
+  axios
+    .get("http://localhost:8080/")
+    .then((response) => {
+      setGet(response.data.message);
+      console.log(response.data.message, "test get");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <>
+      <p>{get}</p>
+    </>
   );
+}
+
+export function Title({persons} : {persons: Person[]}) {
+  return (
+    <>
+      <table className="table-auto">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip</th>
+          </tr>
+        </thead>
+        <tbody>
+          {persons.map((person) => (
+            <tr key={person.id}>
+              <td>{person.name}</td>
+              <td>{person.age}</td>
+              <td>{person.address.street}</td>
+              <td>{person.address.city}</td>
+              <td>{person.address.state}</td>
+              <td>{person.address.zip}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  );
+}
+
+export function PersonData() : Person[] {
+  return [
+    {id: 1, name: "John Doe", age: 35, address: {street: "123 Main St", city: "Anytown", state: "CA", zip: "12345"}},
+    {id: 2, name: "Jane Doe", age: 30, address: {street: "456 Main St", city: "Anytown", state: "CA", zip: "12345"}},
+    {id: 3, name: "Bob Smith", age: 40, address: {street: "789 Main St", city: "Anytown", state: "CA", zip: "12345"}},
+  ];
 }
 
 export default function Home() {
@@ -20,7 +87,9 @@ export default function Home() {
           height={38}
           priority
         />
-        <Title />
+        <Testget/>
+        <Title persons={PersonData()} />
+        <Click />
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
