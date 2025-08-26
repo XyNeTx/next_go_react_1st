@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"npm run dev:go\" \"npm run dev:react\"",
-    "dev:go": "cd server && air",
+    "dev:go": "cd server && air -d",
     "dev:react": "cd client && next dev --turbopack",
     "build": "cd client && next build --turbopack",
     "start": "cd client && next start",
