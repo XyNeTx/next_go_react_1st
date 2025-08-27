@@ -31,8 +31,8 @@ func UserMain() model.User {
 	// for _, user := range UserList {
 	// 	fmt.Println(user.Name)
 	// }
-	fmt.Printf("%s %s \n", *User.Name, *User.Surname)
-	fmt.Println(*User.Name + " " + *User.Surname + " 34")
+	fmt.Printf("%s %s +++++ \n", *User.Name, *User.Surname)
+	//fmt.Println(*User.Name + " " + *User.Surname)
 	//fmt.Println(User)
 	//fmt.Sprintf("%s %s 34\n", *User.Name, *User.Surname)
 	return User

@@ -1,20 +1,8 @@
 'use client'
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import {JSX, useEffect, useState } from "react";
 import Click from "../components/click";
 import axios from "axios";
-
-type Person = {
-  id: number;
-  name: string;
-  age: number;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    zip: string;
-  };
-};
 
 type GetResponse = {
   Avatar: string | null,
@@ -52,90 +40,59 @@ type GetResponse = {
 };
 
 
-export function Testget(){
-  const [get,setGet] = useState<GetResponse | null>(null);
-  useEffect(()=>{
+export function Testget() : JSX.Element {
+  const [get, setGet] = useState<GetResponse | null>(null);
+  useEffect(() =>{
+    fetchData();
+  },[]);
+
+  function fetchData() {
     axios
       .get("http://localhost:8080/")
       .then((response) => {
         console.log(response);
         setGet(response.data.message);
-        //console.log(response.data.message, "test get");
+        console.log(get);
       })
       .catch((error) => {
         console.log(error);
+        return <p>Error fetching data</p>;
       });
-    },[]);
-    return (
-      <>
-        {get !== null ? (
-          <table>
-            <thead>
+  }
+
+  return (
+          <>
+            {get !== null ? (
+              <table style={{ minWidth: "600px" }} className="table-auto border border-slate-400 border-collapse">
+                <thead className="text-center">
+                <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody className="text-center">
               <tr>
-              <th>Code</th>
-              <th>Name</th>
-              <th>Surname</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{get?.code}</td>
-              <td>{get?.name}</td>
-              <td>{get?.surname}</td>
-              <td>{get?.Email}</td>
-            </tr>
-          </tbody>
-        </table>
+                <td>{get?.code}</td>
+                <td>{get?.name}</td>
+                <td>{get?.surname}</td>
+                <td>{get?.Email}</td>
+              </tr>
+            </tbody>
+          </table>
         ) : (
           <p>No data available</p>
         )}
       </>
     );
-  }
+}
 
-// export function Title({persons} : {persons: Person[]}) {
-//   return (
-//     <>
-//       <table className="table-auto">
-//         <thead>
-//           <tr>
-//             <th>Name</th>
-//             <th>Age</th>
-//             <th>Street</th>
-//             <th>City</th>
-//             <th>State</th>
-//             <th>Zip</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {persons.map((person) => (
-//             <tr key={person.id}>
-//               <td>{person.name}</td>
-//               <td>{person.age}</td>
-//               <td>{person.address.street}</td>
-//               <td>{person.address.city}</td>
-//               <td>{person.address.state}</td>
-//               <td>{person.address.zip}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </>
-//   );
-// }
-
-// export function PersonData() : Person[] {
-//   return [
-//     {id: 1, name: "John Doe", age: 35, address: {street: "123 Main St", city: "Anytown", state: "CA", zip: "12345"}},
-//     {id: 2, name: "Jane Doe", age: 30, address: {street: "456 Main St", city: "Anytown", state: "CA", zip: "12345"}},
-//     {id: 3, name: "Bob Smith", age: 40, address: {street: "789 Main St", city: "Anytown", state: "CA", zip: "12345"}},
-//   ];
-// }
 
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <Testget/>
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -145,7 +102,6 @@ export default function Home() {
           height={38}
           priority
         />
-        <Testget/>
         {/* <Title persons={PersonData()} /> */}
         <Click />
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
